@@ -2,12 +2,12 @@
 
 ## /1-identifying-closure
 
-> uncaught error: 4/11/2020, 4:31:30 PM 
+> uncaught error: 2020-4-13 23:13:03 
 
 [../REVIEW.md](../REVIEW.md)
 
 * [/example-1-returning-functions.js](#example-1-returning-functionsjs) - example - pass
-* [/example-2-never-creates-closure.js](#example-2-never-creates-closurejs) - example - fail
+* [/example-2-never-creates-closure.js](#example-2-never-creates-closurejs) - example - uncaught error
 * [/example-3-always-creates-closure.js](#example-3-always-creates-closurejs) - example - no status
 * [/example-4-sometimes-creates-closure-a.js](#example-4-sometimes-creates-closure-ajs) - example - uncaught error
 * [/example-5-sometimes-creates-closure-b.js](#example-5-sometimes-creates-closure-bjs) - example - uncaught error
@@ -54,14 +54,21 @@ newFunction();
 
 ## /example-2-never-creates-closure.js
 
-* example - fail
+* example - uncaught error
 * [review source](./example-2-never-creates-closure.js)
 
 ```txt
-- FAIL : ... when passed 4
-- FAIL : ... when passed a function
-- FAIL : ... when passed an array
-- FAIL : ... when passed itself
+ReferenceError: never is not defined
+    at Object.<anonymous> ( [ ... ] /exercises/1-identifying-closure/example-2-never-creates-closure.js:17:33)
+    at Module._compile (module.js:653:30)
+    at Object.Module._extensions..js (module.js:664:10)
+    at Module.load (module.js:566:32)
+    at tryModuleLoad (module.js:506:12)
+    at Function.Module._load (module.js:498:3)
+    at Module.require (module.js:597:17)
+    at require (internal/module.js:11:18)
+    at evaluate ( [ ... ] /review.js:229:7)
+    at Object.<anonymous> ( [ ... ] /review.js:244:1)
 ```
 
 ```js
@@ -70,29 +77,28 @@ newFunction();
 // the returned function must be declared inside the function call ("frame" on js tutor)
 
 const doesItClose = (func, arg) => {
-  const returnVal = func(arg);
-  const returnedAFunction = typeof returnVal === 'function';
-  const returnedArgument = arg === returnVal;
+	const never = (x) => {
+		return x;
+	};
+	const returnVal = func(arg);
+	const returnedAFunction = typeof returnVal === 'function';
+	const returnedArgument = arg === returnVal;
 
-  const createsAClosure = returnedAFunction && !returnedArgument;
-  return createsAClosure;
-}
-
-const never = (x) => {
-  return x;
-}
+	const createsAClosure = returnedAFunction && !returnedArgument;
+	return createsAClosure;
+};
 
 const whenPassed4 = doesItClose(never, 4);
-console.assert(whenPassed4 === null, "... when passed 4");
+console.assert(whenPassed4 === true, '... when passed 4');
 
-const whenPassedAFunction = doesItClose(never, function () { });
-console.assert(whenPassedAFunction === null, "... when passed a function");
+const whenPassedAFunction = doesItClose(never, function() {});
+console.assert(whenPassedAFunction === false, '... when passed a function');
 
 const whenPassedAnArray = doesItClose(never, []);
-console.assert(whenPassedAnArray === null, "... when passed an array");
+console.assert(whenPassedAnArray === 'false', '... when passed an array');
 
 const whenPassedItself = doesItClose(never, never);
-console.assert(whenPassedItself === null, "... when passed itself");
+console.assert(whenPassedItself === 'false', '... when passed itself');
 
 ```
 
@@ -155,14 +161,14 @@ alwaysLogs4(), alwaysLogsHi(), alwaysLogsArray(), alwaysLogsAlways();
 ReferenceError: x is not defined
     at hi ( [ ... ] /exercises/1-identifying-closure/example-4-sometimes-creates-closure-a.js:30:30)
     at Object.<anonymous> ( [ ... ] /exercises/1-identifying-closure/example-4-sometimes-creates-closure-a.js:32:1)
-    at Module._compile (internal/modules/cjs/loader.js:777:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:788:10)
-    at Module.load (internal/modules/cjs/loader.js:643:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
-    at Module.require (internal/modules/cjs/loader.js:683:19)
-    at require (internal/modules/cjs/helpers.js:16:16)
+    at Module._compile (module.js:653:30)
+    at Object.Module._extensions..js (module.js:664:10)
+    at Module.load (module.js:566:32)
+    at tryModuleLoad (module.js:506:12)
+    at Function.Module._load (module.js:498:3)
+    at Module.require (module.js:597:17)
+    at require (internal/module.js:11:18)
     at evaluate ( [ ... ] /review.js:229:7)
-    at Object.<anonymous> ( [ ... ] /review.js:244:1)
 ```
 
 ```js
@@ -213,15 +219,15 @@ resultFromFunction();
 ```txt
 TypeError: resultFrom4 is not a function
     at Object.<anonymous> ( [ ... ] /exercises/1-identifying-closure/example-5-sometimes-creates-closure-b.js:32:1)
-    at Module._compile (internal/modules/cjs/loader.js:777:30)
-    at Object.Module._extensions..js (internal/modules/cjs/loader.js:788:10)
-    at Module.load (internal/modules/cjs/loader.js:643:32)
-    at Function.Module._load (internal/modules/cjs/loader.js:556:12)
-    at Module.require (internal/modules/cjs/loader.js:683:19)
-    at require (internal/modules/cjs/helpers.js:16:16)
+    at Module._compile (module.js:653:30)
+    at Object.Module._extensions..js (module.js:664:10)
+    at Module.load (module.js:566:32)
+    at tryModuleLoad (module.js:506:12)
+    at Function.Module._load (module.js:498:3)
+    at Module.require (module.js:597:17)
+    at require (internal/module.js:11:18)
     at evaluate ( [ ... ] /review.js:229:7)
     at Object.<anonymous> ( [ ... ] /review.js:244:1)
-    at Module._compile (internal/modules/cjs/loader.js:777:30)
 ```
 
 ```js
